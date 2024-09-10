@@ -1,0 +1,65 @@
+﻿@model GestionReservation.ViewModals.LoginViewModel  
+@{
+    ViewData["Title"] = "Connexion Employer";
+    Layout = null; // Désactiver le layout par défaut pour une page de connexion
+}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewData["Title"] - Modernize Free</title> <!-- Utiliser le titre dynamique -->
+    <link rel="shortcut icon" type="image/png" href="~/Template/images/logos/chu.png" />
+    <link rel="stylesheet" href="~/Template/css/styles.min.css" />
+</head>
+
+<body>
+    <!--  Body Wrapper -->
+    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+        data-sidebar-position="fixed" data-header-position="fixed">
+        <div class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
+            <div class="d-flex align-items-center justify-content-center w-100">
+                <div class="row justify-content-center w-100">
+                    <div class="col-md-8 col-lg-6 col-xxl-3">
+                        <div class="card mb-0">
+                            <div class="card-body">
+                                <a asp-controller="Home" asp-action="Index" class="text-nowrap logo-img text-center d-block py-3 w-100">
+                                    <img src="~/Template/images/logos/chu.png" width="100" alt="Logo">
+                                </a>
+                                <p class="text-center">Admin Portal</p>
+                                <form asp-controller="EmployeAccount" asp-action="Login" method="post">
+                                    <div class="mb-3">
+                                        <label asp-for="Username" class="form-label">Nom d'utilisateur</label>
+                                        <input asp-for="Username" class="form-control" />
+                                        <span asp-validation-for="Username" class="text-danger"></span>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label asp-for="Password" class="form-label">Mot de passe</label>
+                                        <input asp-for="Password" type="password" class="form-control" />
+                                        <span asp-validation-for="Password" class="text-danger"></span>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between mb-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input primary" type="checkbox" value="" id="flexCheckChecked" checked>
+                                            <label class="form-check-label text-dark" for="flexCheckChecked">
+                                                Se souvenir de cet appareil
+                                            </label>
+                                        </div>
+                                        <a class="text-primary fw-bold" href="#">Mot de passe oublié ?</a>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Connexion</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Template/libs/jquery/dist/jquery.min.js"></script>
+    <script src="~/Template/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

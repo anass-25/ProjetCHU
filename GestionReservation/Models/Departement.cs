@@ -1,0 +1,11 @@
+﻿namespace GestionReservation.Models
+{
+    public class Departement
+    {
+        public int Id { get; set; }
+        public string NomDept { get; set; }
+        public string NomSalle { get; set; }
+        public string TypeDept { get; set; }
+        public decimal Budget { get; set; }
+    }
+}

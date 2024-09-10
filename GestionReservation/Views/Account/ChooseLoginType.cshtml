@@ -1,0 +1,29 @@
+﻿@{
+
+    ViewData["Title"] = "Choisir le Type de Connexion";
+    
+}
+
+<div class="container text-center mt-5">
+    <h2>@ViewData["Title"]</h2>
+    <p>Veuillez choisir votre type de connexion :</p>
+
+    <div class="mt-4">
+        <!-- Bouton pour la connexion Employé -->
+        <a asp-controller="EmployeAccount" asp-action="Login" class="btn btn-primary btn-lg mx-2">
+            Connexion Employé
+        </a>
+
+        <!-- Bouton pour la connexion Secrétaire -->
+        <a asp-controller="SecretaireAccount" asp-action="Login" class="btn btn-success btn-lg mx-2">
+            Connexion Secrétaire
+        </a>
+    </div>
+
+    <!-- Lien pour la connexion Admin -->
+    <div class="mt-4">
+        <p>
+            <a asp-controller="AdminAccount" asp-action="Login" class="btn btn-link">Connexion Admin</a>
+        </p>
+    </div>
+</div>
