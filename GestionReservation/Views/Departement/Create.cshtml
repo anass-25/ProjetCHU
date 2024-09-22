@@ -1,0 +1,59 @@
+﻿@model GestionReservation.ViewModals.DepartementViewModel
+@{
+    ViewData["Title"] = "Créer un Département";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    
+}
+
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">@ViewData["Title"]</h2>
+
+    <form asp-action="Create" method="post">
+        <div class="form-group">
+            <label asp-for="NomDept" class="control-label"></label>
+            <input asp-for="NomDept" class="form-control" />
+            <span asp-validation-for="NomDept" class="text-danger"></span>
+        </div>
+        <div class="form-group mt-3">
+            <label asp-for="NomSalle" class="control-label"></label>
+            <input asp-for="NomSalle" class="form-control" />
+            <span asp-validation-for="NomSalle" class="text-danger"></span>
+        </div>
+        <div class="form-group mt-3">
+            <label asp-for="TypeDept" class="control-label"></label>
+            <input asp-for="TypeDept" class="form-control" />
+            <span asp-validation-for="TypeDept" class="text-danger"></span>
+        </div>
+        <div class="form-group mt-3">
+            <label asp-for="Budget" class="control-label"></label>
+            <input asp-for="Budget" type="number" class="form-control" />
+            <span asp-validation-for="Budget" class="text-danger"></span>
+        </div>
+
+        <!-- Admin Selection -->
+        <div class="form-group mt-3">
+            <label asp-for="AdminId">Administrateur :</label>
+            <select asp-for="AdminId" class="form-control">
+                <option value="">-- Sélectionnez un administrateur --</option>
+                @if (ViewBag.Admins != null)
+                {
+                    foreach (var admin in ViewBag.Admins as SelectList)
+                    {
+                        <option value="@admin.Value">@admin.Text</option>
+                    }
+                }
+            </select>
+            <span asp-validation-for="AdminId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mt-4 text-center">
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+            <a asp-action="Index" asp-controller="Departement" class="btn btn-secondary ms-2">Annuler</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

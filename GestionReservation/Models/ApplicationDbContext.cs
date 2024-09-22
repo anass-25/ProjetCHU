@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Reflection.Emit;
 using GestionReservation.Models;
 
 namespace GestionReservation.Models
@@ -12,35 +10,79 @@ namespace GestionReservation.Models
         {
         }
 
+        public DbSet<Admin> Admins { get; set; }
         public DbSet<Employe> Employes { get; set; }
         public DbSet<Secretaire> Secretaires { get; set; }
-        public DbSet<Admin> Admins { get; set; }
-        public DbSet<Reservation> Reservations { get; set; }
         public DbSet<Departement> Departements { get; set; }
-        public DbSet<Notification> Notifications { get; set; }
         public DbSet<Equipement> Equipements { get; set; }
+        public DbSet<Reservation> Reservations { get; set; }
         public DbSet<SalleDeReunion> SalleDeReunions { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Configurer les tables pour chaque entité (facultatif)
-            modelBuilder.Entity<Employe>().ToTable("Employes");
-            modelBuilder.Entity<Secretaire>().ToTable("Secretaires");
-            modelBuilder.Entity<Admin>().ToTable("Admins");
-            modelBuilder.Entity<Reservation>().ToTable("Reservations");
-            modelBuilder.Entity<Departement>().ToTable("Departements");
-            modelBuilder.Entity<Notification>().ToTable("Notifications");
-            modelBuilder.Entity<Equipement>().ToTable("Equipements");
-            modelBuilder.Entity<SalleDeReunion>().ToTable("SalleDeReunions");
+            // TPH Inheritance
+            modelBuilder.Entity<Personne>()
+                .HasDiscriminator<string>("PersonneType")
+                .HasValue<Admin>("Admin")
+                .HasValue<Employe>("Employe")
+                .HasValue<Secretaire>("Secretaire");
 
-            // Configuration spécifique pour la propriété Budget de Departement
+            // Relations Configuration
+
+            // Admin -> Departements (One-to-Many)
+            modelBuilder.Entity<Departement>()
+                .HasOne(d => d.Admin)
+                .WithMany(a => a.Departements)
+                .HasForeignKey(d => d.AdminId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Employe -> Departement (Many-to-One)
+            modelBuilder.Entity<Employe>()
+                .HasOne(e => e.Departement)
+                .WithMany(d => d.Employes)
+                .HasForeignKey(e => e.DepartementId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Secretaire -> Managed Reservations (One-to-Many)
+            modelBuilder.Entity<Reservation>()
+                .HasOne(r => r.Secretaire)
+                .WithMany(s => s.ManagedReservations)
+                .HasForeignKey(r => r.SecretaireId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Employe -> Reservations (One-to-Many)
+            modelBuilder.Entity<Reservation>()
+                .HasOne(r => r.Employe)
+                .WithMany(e => e.Reservations)
+                .HasForeignKey(r => r.EmployeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // SalleDeReunion -> Reservations (One-to-Many)
+            modelBuilder.Entity<Reservation>()
+                .HasOne(r => r.SalleDeReunion)
+                .WithMany(s => s.Reservations)
+                .HasForeignKey(r => r.SalleDeReunionId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Notification configuration (for Secretaire or Employe)
+            modelBuilder.Entity<Notification>()
+                .HasOne(n => n.Secretaire)
+                .WithMany(s => s.Notifications)
+                .HasForeignKey(n => n.SecretaireId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Notification>()
+                .HasOne(n => n.Employe)
+                .WithMany(e => e.Notifications)
+                .HasForeignKey(n => n.EmployeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<Departement>()
                 .Property(d => d.Budget)
-                .HasColumnType("decimal(18, 2)");
-
-            // Autres configurations si nécessaire...
+                .HasColumnType("decimal(18,2)");
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model List<GestionReservation.ViewModals.UserViewModel>
+﻿@model IEnumerable<GestionReservation.ViewModals.UserViewModel>
 
 @{
     ViewData["Title"] = "User List";
@@ -6,34 +6,63 @@
 }
 
 <div class="container mt-5">
-    <h2 class="text-center mb-4">User List</h2>
+    <h2 class="text-center mb-4">@ViewData["Title"]</h2>
 
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var user in Model)
-            {
+    @if (Model.Any())
+    {
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <td>@user.Nom</td>
-                    <td>@user.Prenom</td>
-                    <td>@user.Email</td>
-                    <td>@user.Role</td>
-                    <td>
-                        <a asp-action="EditUser" asp-route-id="@user.Id" asp-route-role="@user.Role" class="btn btn-warning btn-sm">Edit</a>
-                        <form asp-action="DeleteUser" asp-route-id="@user.Id" asp-route-role="@user.Role" method="post" class="d-inline">
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                        </form>
-                    </td>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Email</th>
+                    <th>Rôle</th>
+                    <th>Actions</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.Nom</td>
+                        <td>@user.Prenom</td>
+                        <td>@user.Email</td>
+                        <td>@user.Role</td>
+                        <td>
+                            @if (user.Role == "Employe")
+                            {
+                                <a asp-action="EditEmploye" asp-route-id="@user.Id" class="btn btn-primary">Modifier</a>
+                            }
+                            else if (user.Role == "Secretaire")
+                            {
+                                <a asp-action="EditSecretaire" asp-route-id="@user.Id" class="btn btn-primary">Modifier</a>
+                            }
+                            else if (user.Role == "Admin")
+                            {
+                                <a asp-action="EditAdmin" asp-route-id="@user.Id" class="btn btn-primary">Modifier</a>
+                            }
+
+                            <form asp-action="DeleteUser" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@user.Id" />
+                                <input type="hidden" name="role" value="@user.Role" />
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            Aucun utilisateur trouvé.
+        </div>
+    }
+
+    <div class="mt-3">
+        <a asp-action="CreateEmploye" class="btn btn-success">Ajouter Employé</a>
+        <a asp-action="CreateSecretaire" class="btn btn-info">Ajouter Secrétaire</a>
+        <a asp-action="CreateAdmin" class="btn btn-warning">Ajouter Admin</a>
+    </div>
 </div>

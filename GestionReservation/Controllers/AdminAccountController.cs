@@ -8,34 +8,28 @@ namespace GestionReservation.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        // Le constructeur injecte ApplicationDbContext
         public AdminAccountController(ApplicationDbContext context)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        // GET: /AdminAccount/Login
         public IActionResult Login()
         {
             return View();
         }
 
-        // POST: /AdminAccount/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Login(LoginViewModel model)
         {
-            if (!ModelState.IsValid) // Vérifie si le modèle est valide
+            if (!ModelState.IsValid)
             {
-                return View(model); // Retourne la vue avec les erreurs de validation
+                return View(model); 
             }
-
-            // Utiliser EF Core pour vérifier les informations d'identification dans la base de données
             var admin = _context.Admins.SingleOrDefault(a => a.Nom == model.Username && a.Password == model.Password);
 
             if (admin != null)
             {
-                // Définir la session
                 HttpContext.Session.SetString("Nom", admin.Nom);
                 HttpContext.Session.SetString("Role", "Admin");
 
@@ -43,11 +37,10 @@ namespace GestionReservation.Controllers
             }
             else
             {
-                ViewBag.Message = "Nom ou mot de passe invalide.";
+                ModelState.AddModelError("", "Nom ou mot de passe invalide.");
                 return View(model);
             }
         }
-
     }
 }
 

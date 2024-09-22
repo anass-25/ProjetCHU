@@ -22,14 +22,14 @@ namespace GestionReservation.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Login(LoginViewModel model)
         {
-            if (!ModelState.IsValid) 
+            if (!ModelState.IsValid)
             {
-                return View(model); 
+                return View(model);
             }
-            var admin = _context.Admins.SingleOrDefault(a => a.Nom == model.Username && a.Password == model.Password);
-            if (admin != null)
+            var employe = _context.Employes.SingleOrDefault(e => e.Nom == model.Username && e.Password == model.Password);
+            if (employe != null)
             {
-                HttpContext.Session.SetString("Nom", admin.Nom);
+                HttpContext.Session.SetString("Nom", employe.Nom);
                 HttpContext.Session.SetString("Role", "Employe");
                 return RedirectToAction("Index", "Employe");
             }
@@ -43,7 +43,7 @@ namespace GestionReservation.Controllers
         [HttpPost]
         public IActionResult Logout()
         {
-            HttpContext.Session.Clear(); 
+            HttpContext.Session.Clear();
             return RedirectToAction("Login", "EmployeAccount");
         }
     }

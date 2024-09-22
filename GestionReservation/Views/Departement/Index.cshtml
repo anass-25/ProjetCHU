@@ -1,0 +1,39 @@
+﻿@model IEnumerable<GestionReservation.Models.Departement>
+
+@{
+    ViewData["Title"] = "Liste des Départements";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nom du Département</th>
+            <th>Nom de la Salle</th>
+            <th>Type de Département</th>
+            <th>Budget</th>
+            <th>Administrateur</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var dept in Model)
+        {
+            <tr>
+                <td>@dept.NomDept</td>
+                <td>@dept.NomSalle</td>
+                <td>@dept.TypeDept</td>
+                <td>@dept.Budget</td>
+                <td>@dept.Admin.Nom</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@dept.Id" class="btn btn-warning">Modifier</a>
+                    <a asp-action="Delete" asp-route-id="@dept.Id" class="btn btn-danger">Supprimer</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Create" class="btn btn-primary">Ajouter un nouveau Département</a>

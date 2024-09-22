@@ -1,0 +1,40 @@
+﻿@model GestionReservation.ViewModals.DepartementViewModel
+
+
+@{
+    ViewData["Title"] = "Modifier un Département";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="NomDept" class="control-label"></label>
+        <input asp-for="NomDept" class="form-control" />
+        <span asp-validation-for="NomDept" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="NomSalle" class="control-label"></label>
+        <input asp-for="NomSalle" class="form-control" />
+        <span asp-validation-for="NomSalle" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="TypeDept" class="control-label"></label>
+        <input asp-for="TypeDept" class="form-control" />
+        <span asp-validation-for="TypeDept" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Budget" class="control-label"></label>
+        <input asp-for="Budget" class="form-control" />
+        <span asp-validation-for="Budget" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="AdminId" class="control-label"></label>
+        <select asp-for="AdminId" class="form-control" asp-items="Model.Admins"></select>
+        <span asp-validation-for="AdminId" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+    <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
+</form>

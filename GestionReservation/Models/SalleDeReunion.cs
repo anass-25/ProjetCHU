@@ -7,5 +7,6 @@
         public int Capacite { get; set; }
         public string Localisation { get; set; }
         public string EtatSalle { get; set; }
+        public ICollection<Reservation> Reservations { get; set; }
     }
 }

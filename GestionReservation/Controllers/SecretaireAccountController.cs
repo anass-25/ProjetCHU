@@ -8,45 +8,40 @@ namespace GestionReservation.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        // Le constructeur injecte ApplicationDbContext
         public SecretaireAccountController(ApplicationDbContext context)
         {
             _context = context;
         }
-
-        // GET: /SecretaireAccount/Login
         public IActionResult Login()
         {
             return View();
         }
 
-        // POST: /SecretaireAccount/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login(string nom, string password)
+        public IActionResult Login(LoginViewModel model) 
         {
-            // Utiliser EF Core pour vérifier les informations d'identification dans la base de données
-            var secretaire = _context.Secretaires.SingleOrDefault(s => s.Nom == nom && s.Password == password);
+            if (!ModelState.IsValid) 
+            {
+                return View(model); 
+            }
+            var secretaire = _context.Secretaires.SingleOrDefault(s => s.Nom == model.Username && s.Password == model.Password);
 
             if (secretaire != null)
             {
-                // Définir la session
                 HttpContext.Session.SetString("Nom", secretaire.Nom);
                 HttpContext.Session.SetString("Role", "Secretaire");
-
                 return RedirectToAction("Index", "Home");
             }
             else
             {
                 ViewBag.Message = "Nom ou mot de passe invalide.";
-                return View();
+                return View(model);
             }
         }
-
-        // GET: /SecretaireAccount/Logout
         public IActionResult Logout()
         {
-            HttpContext.Session.Clear(); // Effacer toutes les sessions
+            HttpContext.Session.Clear(); // Clear all sessions
             return RedirectToAction("Login", "SecretaireAccount");
         }
     }

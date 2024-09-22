@@ -1,0 +1,34 @@
+﻿@model IEnumerable<GestionReservation.ViewModals.UserViewModel>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Liste des Admins</h2>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var admin in Model)
+            {
+                <tr>
+                    <td>@admin.Nom</td>
+                    <td>@admin.Prenom</td>
+                    <td>@admin.Email</td>
+                    <td>
+                        <a asp-action="EditAdmin" asp-route-id="@admin.Id" class="btn btn-primary">Modifier</a>
+                        <form asp-action="DeleteAdmin" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@admin.Id" />
+                            <button type="submit" class="btn btn-danger">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a asp-action="CreateAdmin" class="btn btn-success">Ajouter Admin</a>
+</div>

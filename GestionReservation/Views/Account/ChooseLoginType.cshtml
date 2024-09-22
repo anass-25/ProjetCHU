@@ -1,29 +1,68 @@
 ﻿@{
-
     ViewData["Title"] = "Choisir le Type de Connexion";
-    
+    Layout = null; // Pas de layout pour une page de connexion simplifiée
 }
 
-<div class="container text-center mt-5">
-    <h2>@ViewData["Title"]</h2>
-    <p>Veuillez choisir votre type de connexion :</p>
+<!DOCTYPE html>
+<html lang="fr">
 
-    <div class="mt-4">
-        <!-- Bouton pour la connexion Employé -->
-        <a asp-controller="EmployeAccount" asp-action="Login" class="btn btn-primary btn-lg mx-2">
-            Connexion Employé
-        </a>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/Template/css/styles.min.css" /> <!-- Assurez-vous d'inclure le fichier CSS nécessaire -->
+    <style>
+        /* Style personnalisé pour centrer les éléments */
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f0f2f5;
+        }
 
-        <!-- Bouton pour la connexion Secrétaire -->
-        <a asp-controller="SecretaireAccount" asp-action="Login" class="btn btn-success btn-lg mx-2">
-            Connexion Secrétaire
-        </a>
+        .container {
+            background: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-lg {
+            width: 200px;
+            margin: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container text-center">
+        <div class="brand-logo d-flex flex-column align-items-center justify-content-center">
+            <img src="~/Template/images/logos/chu.png" width="100" alt="Logo" class="mx-auto d-block" />
+            <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
+                <i class="ti ti-x fs-8"></i>
+            </div>
+        </div>
+        <h2>@ViewData["Title"]</h2>
+        <p>Veuillez choisir votre type de connexion :</p>
+        <div class="mt-4">
+            <a asp-controller="EmployeAccount" asp-action="Login" class="btn btn-primary btn-lg">
+                Connexion Employé
+            </a>
+            <a asp-controller="SecretaireAccount" asp-action="Login" class="btn btn-success btn-lg">
+                Connexion Secrétaire
+            </a>
+        </div>
+        <div class="mt-4">
+            <p>
+                <a asp-controller="AdminAccount" asp-action="Login" class="btn btn-link">Connexion Admin</a>
+            </p>
+        </div>
     </div>
 
-    <!-- Lien pour la connexion Admin -->
-    <div class="mt-4">
-        <p>
-            <a asp-controller="AdminAccount" asp-action="Login" class="btn btn-link">Connexion Admin</a>
-        </p>
-    </div>
-</div>
+    <script src="~/Template/libs/jquery/dist/jquery.min.js"></script>
+    <script src="~/Template/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
